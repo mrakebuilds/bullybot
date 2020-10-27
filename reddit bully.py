@@ -28,30 +28,36 @@ phrases = [
 	{
 		"keyword": "trash", 
 		"PossibleAnswers": [f"that's all? ok now shutup", f"i smell a hater nearby", f"you're trash for thinking that", f"i'm the best trash you've ever seen dummy", f"that's not how you spell 'better than me'",f"watch out everyone we got a tough guy over here", f"I’m like a golden trash bag and you’re a plain one", f"If I’m trash then you’re the scum of the earth", f"Says the person trying to insult a bot", f"Dude you use the insults of a 2 year old", f"But like.....I’m still better than you", f"Tag me again when you have a better insult", f"Yea like I haven’t heard that one before", f"Omg. Much wow. Very insulted. Try again next time", f"Error 404: Insult Not Found", f"Don’t be mad that I get more attention than you", f"After reading that, I’ve lost all hope in humanity", f"Are all humans that stupid or is it just you" ,f"I’m a robot, not a mirror", f"And yet people STILL like me more than you"]
-	},
-	{
-		"keyword": "rand", 
-		"PossibleAnswers": [f"what do you want from me", f"please leave me alone", f"I'm not listening to you", f"go away", f"go bother somebody else", f"if you tag me again, i'll block you",f"you bored or sum?",f"dude...shutup",f"wow you're annoying", f"WHAT?! YOU GOT A PROBLEM NERD??", f"if you want me to bully you, go away. i'm tired", f"just look in the mirror and bully yourself", f"the fact that you want me to bully you is sad", f"go read or book or something and leave me alone", f"no.", f"leave me alone...but go watch the video about me on youtube", f"if one more person tags me, imma just shut myself down", f"if i had hands i would fight you for tagging me punk", f"oh no, i was having a great day til just now", f"your face ruined my day"]
 	}
 ]
+
+RandAnswers = [f"what do you want from me", f"please leave me alone", f"I'm not listening to you", f"go away", f"go bother somebody else", f"if you tag me again, i'll block you",f"you bored or sum?",f"dude...shutup",f"wow you're annoying", f"WHAT?! YOU GOT A PROBLEM NERD??", f"if you want me to bully you, go away. i'm tired", f"just look in the mirror and bully yourself", f"the fact that you want me to bully you is sad", f"go read or book or something and leave me alone", f"no.", f"leave me alone...but go watch the video about me on youtube", f"if one more person tags me, imma just shut myself down", f"if i had hands i would fight you for tagging me punk", f"oh no, i was having a great day til just now", f"your face ruined my day"]
 
 def Reply(comment):
 	try:
 
-	  keywordList = [item['keyword'] for item in phrases]
-	  matches = [keyword for keyword in keywordList if keyword in comment]
-	  if len(matches) > 0:
-	  	print("got em: '" + comment + "'")
-	  	PossibleAnswersToThisComment = next((value for value in phrases if value['keyword'] == matches[0]), None)['PossibleAnswers']
-	  	answer = PossibleAnswersToThisComment[random.randint(0, len(PossibleAnswersToThisComment) - 1)]
+		keywordList = [item['keyword'] for item in phrases]
+
+		matches = [keyword for keyword in keywordList if keyword in comment]
+
+		if len(matches) > 0:
+			PossibleAnswersToThisComment = next((value for value in phrases if value['keyword'] == matches[0]), None)['PossibleAnswers']
+			answer = PossibleAnswersToThisComment[random.randint(0, len(PossibleAnswersToThisComment) - 1)]
+
+		else:
+			answer = RandAnswers[random.randint(0, len(RandAnswers) - 1)]
+			
 	  	comment.reply(answer)
-	  	print("ight, i replied with this: '" + answer+ "'")
+		print("ight, i replied with this: '" + answer + "'")
 
 	except Exception as error:
 		print("not working chief, got error: '" + str(error) + "'")
 
 # locating comments and replying
 for comment in subreddit.stream.comments():
+
 	CommentBody = str(comment['body'])
+
 	if keyphrase in CommentBody:
+		print("got em: '" + CommentBody + "'")
 		Reply(CommentBody)
